@@ -1,41 +1,75 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 
 export default function App() {
+  const [numberLikes, setNumberLikes] = useState(128);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleLikes = () => {
+    if (isLiked) {
+      setNumberLikes(numberLikes - 1);
+      setIsLiked(false);
+    } else {
+      setNumberLikes(numberLikes + 1);
+      setIsLiked(true);
+    }
+  };
+
+  const handleSave = () => {
+    if (isSaved) {
+      setIsSaved(false);
+    } else {
+      setIsSaved(true);
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.logo}>Instagram</Text>
       <View style={styles.header}>
-
         <View style={styles.userInfo}>
-          <Image
-            source={require('./assets/images/profile.png')}
-            style={styles.profileImage}
-          />
-          <Text style={styles.username}>Username</Text>
+          <Image source={require('./assets/images/profile.png')} style={styles.profileImage} />
+          <Text style={styles.username}>Dark Oficial</Text>
         </View>
-
-        <Image
-          source={require('./assets/images/menu.png')}
-          style={styles.icon}
-        />
+        <Image source={require('./assets/images/menu.png')} style={styles.icon} />
       </View>
       <View style={styles.postContainer}>
-        <Image
-          source={require('./assets/images/dark.jpg')}
-          style={styles.postImage}
-        />
+        <Image source={require('./assets/images/dark.jpg')} style={styles.postImage} />
       </View>
       <View style={styles.actions}>
         <View style={styles.actions2}>
-          <Image source={require('./assets/images/like.png')} style={styles.icon} />
+
+          <TouchableOpacity onPress={handleLikes}>
+            <Image
+              source={
+                isLiked
+                  ? require('./assets/images/like.png')
+                  : require('./assets/images/heart.png')
+              }
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+
+          <Text style={styles.numberLikes}>{numberLikes}</Text>
+
           <Image source={require('./assets/images/coment.png')} style={styles.icon} />
           <Image source={require('./assets/images/share.png')} style={styles.icon} />
         </View>
-        <Image
-          source={require('./assets/images/save.png')}
-          style={styles.icon}
-        />
+
+        <TouchableOpacity onPress={handleSave}>
+          <Image
+            source={
+              isSaved
+                ? require('./assets/images/save.png')
+                : require('./assets/images/saveColor.png')
+            }
+            style={styles.icon}
+          />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.infoContainer}>
         <Text style={styles.views}>17,280 views</Text>
 
@@ -54,15 +88,20 @@ export default function App() {
         <Image source={require('./assets/images/heart.png')} style={styles.icon} />
         <Image source={require('./assets/images/profile.png')} style={styles.icon} />
       </View>
-    </View>
+
+    </ScrollView>
   );
 }
+
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#ffffff',
     paddingTop: 40,
+    paddingBottom: 30,
   },
+
 
   logo: {
     fontSize: 24,
@@ -145,8 +184,6 @@ const styles = StyleSheet.create({
   },
 
   navigation: {
-    position: 'absolute',
-    bottom: 0,
     width: '100%',
     paddingVertical: 10,
     borderTopWidth: 0.5,
@@ -154,5 +191,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#fff',
+    marginTop: 20,
+  },
+
+
+  numberLikes: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginRight: 12,
   },
 });
